@@ -123,6 +123,47 @@ pip freeze > requirements.txt
 django-admin startproject djangorest
 ```
 
+После выполнения этой команды, в каталоге с проектом должен был появиться новый каталог с названием djangorest. Вы можете выбрать любое другое название. В данный момент Вы должны иметь примерно следующую структуру каталогов:
+
+```
+djangorest
+├─djangorest
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+└── manage.py
+```
+
+### Добавляем DRF
+
+Используя pip, установите DRF
+
+```
+pip install djangorestframework
+```
+
+Чтобы мы могли использовать DRF в нашем приложении, мы должны добавить `rest_framework` в файл `settings.py`. После добавления он будет выглядеть примерно следующим образом:
+
+```
+# /djangorest/djangorest/settings.py
+...
+
+# Application definition
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles', # Не забудьте добавить запятую в конце этой строки
+    'rest_framework', # Добавьте эту строку в Ваш файл
+]
+```
+
+## Создаем REST API приложение
+
 
 
 
