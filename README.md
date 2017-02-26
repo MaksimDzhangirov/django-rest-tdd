@@ -1,3 +1,4 @@
-# My Awesome Book
+# Создаем REST API c помощью Django
 
-This file file serves as your book's preface, a great place to describe your book's content and ideas.
+Эта книга является вольным переводом статей https://scotch.io/tutorials/build-a-rest-api-with-django-a-test-driven-approach-part-1.
+
