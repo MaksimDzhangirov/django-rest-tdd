@@ -225,7 +225,7 @@ class ModelTestCase(TestCase):
 
 ### Затем мы определяем наши модели
 
-Создадим пустую модель в файле `models.py`. 
+Создадим пустую модель в файле `models.py`.
 
 ```
 # /api/models.py
@@ -234,6 +234,30 @@ from django.db import models
 
 class Bucketlist(models.Model):
     pass
+```
+
+Запускать тесты в Django очень легко. Мы будем использовать команду test:
+
+```
+python3 manage.py test
+```
+
+Вы должны увидеть ошибки. Ничего страшного! Ведь пока мы не заполнили поля для модели и не обновили нашу базу данных. Базой данных по умолчанию в Django является SQLite и для наших целей её будет достаточно. Кроме того нам не придется писать ни одной SQL команды при создании моделей. Django сделает все это за нас. В файле `models.py` определим поля, которые будут представлять строки таблицы в нашей базе данных.
+
+```
+# api/models.py
+
+from django.db import models
+
+class Bucketlist(models.Model):
+    """Этот класс определяет модель для списка заветных желаний."""
+    name = models.CharField(max_length=255, blank=False, unique=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        """Возвращаем понятное человеку представление экземпляра модели."""
+        return "{}".format(self.name)
 ```
 
 
