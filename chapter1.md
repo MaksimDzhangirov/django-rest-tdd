@@ -197,7 +197,29 @@ INSTALLED_APPS = [
 
 ### Сначала пишем тест!
 
-В первую очередь необходимо создать модели. Но прежде чем создавать модели, нужно написать тесты. Поэтому мы напишем несколько тестов в каталоге test.py нашего приложения api.
+В первую очередь необходимо создать модели. Но прежде чем создавать модели, нужно написать тесты. Поэтому мы напишем несколько тестов в каталоге test.py нашего приложения `api`.
 
+```
+# /api/tests.py
 
+from django.test import TestCase
+from .models import Bucketlist
+
+class ModelTestCase(TestCase):
+    """В этом классе определяется тестовый набор (test suite) для модели списка заветных желаний."""
+
+    def setUp(self):
+        """Определяем тестовый клиент и другие тестовые переменные."""
+        self.bucketlist_name = "Write world class code"
+        self.bucketlist = Bucketlist(name=self.bucketlist_name)
+
+    def test_model_can_create_a_bucketlist(self):
+        """Проверяем может ли модель для списка заветных желаний создавать список заветных желаний."""
+        old_count = Bucketlist.objects.count()
+        self.bucketlist.save()
+        new_count = Bucketlist.objects.count()
+        self.assertNotEqual(old_count, new_count)
+```
+
+Здесь мы импортируем тестовый случай \(test case\) из django.test. Тестовый случай состоит из одного теста, который проверяет может ли модель создать список заветных желаний с указанным именем.
 
