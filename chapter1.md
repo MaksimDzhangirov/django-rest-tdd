@@ -149,7 +149,7 @@ pip install djangorestframework
 # /djangorest/djangorest/settings.py
 ...
 
-# Application definition
+# Настройки приложения
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -173,6 +173,25 @@ python3 manage.py startapp api
 ```
 
 Команда `startapp` создает новое приложение. Наше приложение называется `api`. В нём будет находится логика нашего API. После выполнения этой команды внутри каталога `djangorest` должен появиться каталог `api`.
+
+Чтобы интегрировать наше приложение `api` в главное приложение `djangorest,` его необходимо добавить в файл `settings.py`. Давайте сделаем это прямо сейчас.
+
+```
+...
+
+# Настройки приложения
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'rest_framework',
+    'api', # Добавьте эту строку
+]
+```
 
 
 
