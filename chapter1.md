@@ -313,9 +313,33 @@ class BucketlistSerializer(serializers.ModelSerializer):
 * Обновлять список заветных желаний - обрабатываем PUT запрос.
 * Удалять список заветных желаний - обрабатываем DELETE запрос.
 
-Основываясь на вышеперечисленных функциях, мы знаем, что необходимо протестировать. Рассмотрим каждую функцию по отдельности. Давайте начнем с первой. Если мы хотим протестировать может ли API успешно создавать список заветных желаний , мы должны написать следующий код в `tests.py`.
+Основываясь на вышеперечисленных функциях, мы знаем, что необходимо протестировать. Рассмотрим каждую функцию по отдельности. Давайте начнем с первой. Если мы хотим протестировать может ли API успешно создавать список заветных желаний , мы должны добавить следующий код в `tests.py`.
 
+```
+# api/tests.py
 
+# Добавьте эти импорты в начало файла
+from rest_framework.test import APIClient
+from rest_framework import status
+from django.core.urlresolvers import reverse
+
+# Добавьте это после ModelTestCase
+class ViewTestCase(TestCase):
+    """Тестовый набор для представлений api."""
+
+    def setUp(self):
+        """Определяем тестовый клиент и другие тестовые переменные."""
+        self.client = APIClient()
+        self.bucketlist_data = {'name': 'Go to Ibiza'}
+        self.response = self.client.post(
+            reverse('create'),
+            self.bucketlist_data,
+            format="json")
+
+    def test_api_can_create_a_bucketlist(self):
+        """Тестируем возможность создания списка заветных желаний api."""
+        self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
+```
 
 
 
