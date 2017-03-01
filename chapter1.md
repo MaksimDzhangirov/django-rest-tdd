@@ -286,7 +286,25 @@ python3 manage.py migrate
 
 ### Используйте ModelSerializers. Они действительно превосходны!
 
+Класс `ModelSerializers` позволяет Вам автоматически создавать класс-сериализатор с полями, которые соответствуют полям модели. Это позволяет значительно уменьшить количество кода, которое необходимо написать. Создадим файл с названием `serializers.py` внутри каталога `api`. В него добавьте следующий код:
 
+```
+# api/serializers.py
+
+from rest_framework import serializers
+from .models import Bucketlist
+
+class BucketlistSerializer(serializers.ModelSerializer):
+    """Сериализатор преобразующий экземпляр модели в JSON формат."""
+
+    class Meta:
+        """Мета класс для отображения полей сериализатора в поля модели."""
+        model = Bucketlist
+        fields = ('id', 'name', 'date_created', 'date_modified')
+        read_only_fields = ('date_created', 'date_modified')
+```
+
+## Представления
 
 
 
