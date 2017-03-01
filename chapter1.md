@@ -341,5 +341,50 @@ class ViewTestCase(TestCase):
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
 ```
 
-При запуске тест завершиться с ошибкой. Ничего удивительного, ведь мы не реализовали представления и 
+При запуске тест завершиться с ошибкой. Ничего удивительного, ведь мы не реализовали представления и не прописали url для обработки POST запроса.
+
+Давайте сделаем это! В `views.py` добавьте следующий код:
+
+```
+# api/views.py
+
+from rest_framework import generics
+from .serializers import BucketlistSerializer
+from .models import Bucketlist
+
+class CreateView(generics.ListCreateAPIView):
+    """Этот класс определяет поведение нашего rest api при создании нового списка."""
+    queryset = Bucketlist.objects.all()
+    serializer_class = BucketlistSerializer
+
+    def perform_create(self, serializer):
+        """Сохраняем post данные при создании нового списка заветных желаний."""
+        serializer.save()
+```
+
+ListCreateAPIView - это общее представление, которое предоставляет обработчики для методов GET \(вывести все объекты в виде списка\) и POST.
+
+Обратите внимание на то, что мы указали атрибуты `queryset` и `serializer_class`. Мы также объявили метод `perform_create`, который помогает сохранить новый список заветных желаний переданный методом POST.
+
+## Настройка Url
+
+Для того, чтобы наше приложение было законченным, мы должны указать URL в качестве "конечных точек"  нашего API.  Думайте об URL как о способе взаимодействия с внешним миром. Если кто-то хочет взаимодействовать с нашим веб-API, они должны использовать наш URL.
+
+Создайте файл `urls.py` в каталоге api. В нем мы определим наши url-шаблоны.
+
+```
+# api/urls.py
+
+from django.conf.urls import url, include
+from rest_framework.urlpatterns import format_suffix_patterns
+from .views import CreateView
+
+urlpatterns = {
+    url(r'^bucketlists/$', CreateView.as_view(), name="create"),
+}
+
+urlpatterns = format_suffix_patterns(urlpatterns)
+```
+
+
 
