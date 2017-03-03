@@ -471,5 +471,22 @@ class DetailsView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BucketlistSerializer
 ```
 
+RetrieveUpdateDestroyAPIView - это общее представление, содержащее обработчики для GET \(получаем один конкретный список\), PUT, PATCH и DELETE методов.
+
+Наконец, мы создаем новый URL, который будет связан с нашим DetailsView.
+
+```
+# api/urls.py
+
+from .views import DetailsView 
+
+url(r'^bucketlists/(?P<pk>[0-9]+)/$',
+        DetailsView.as_view(), name="details"),
+```
+
+## Подводим итоги
+
+
+
 
 
