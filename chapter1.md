@@ -459,5 +459,17 @@ python3 manage.py runserver
         self.assertEquals(response.status_code, status.HTTP_204_NO_CONTENT)
 ```
 
+Если мы запустим эти тесты, они должны завершиться с ошибками. Давайте исправим это. Пора дополнить API обработчиками PUT и DELETE методов. Мы определим класс-представление для этого. В файл `views.py` добавьте следующий код:
+
+```
+# api/views.py
+
+class DetailsView(generics.RetrieveUpdateDestroyAPIView):
+    """Этот класс является обработчиком HTTP GET, PUT and DELETE запросов."""
+
+    queryset = Bucketlist.objects.all()
+    serializer_class = BucketlistSerializer
+```
+
 
 
