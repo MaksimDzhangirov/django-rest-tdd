@@ -416,7 +416,7 @@ python3 manage.py runserver
 
 Это сообщение означает, что локальный сервер успешно запущен.
 
-Введите в адресной строке браузера адрес локального сервера и URL, который мы назначили для доступа к нашему API \(http://127.0.0.1:8000/bucketlists\). Вуаля - все работает!
+Введите в адресной строке браузера адрес локального сервера и URL, который мы назначили для доступа к нашему API \([http://127.0.0.1:8000/bucketlists\](http://127.0.0.1:8000/bucketlists\)\). Вуаля - все работает!
 
 ![](/images/part1/create.png)Теперь введите название списка заветных желаний и нажмите на кнопку POST, чтобы проверить работу API. Вы должны увидеть примерно следующее:
 
@@ -424,7 +424,40 @@ python3 manage.py runserver
 
 ## Отображение, обновление и удаление списка
 
+Мы напишем ещё три теста для проверки правильности работы GET, PUT и DELETE запросов. Они выглядят следующим образом:
 
+```
+# api/tests.py
+
+    def test_api_can_get_a_bucketlist(self):
+        """Тестируем API на способность выдачи заданного списка заветных желаний."""
+        bucketlist = Bucketlist.objects.get()
+        response = self.client.get(
+            reverse('details'),
+            kwargs={'pk': bucketlist.id}, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertContains(response, bucketlist)
+
+    def test_api_can_update_bucketlist(self):
+        """Тестируем API на способность обновления заданного списка заветных желаний."""
+        change_bucketlist = {'name': 'Something new'}
+        res = self.client.put(
+            reverse('details', kwargs={'pk': bucketlist.id}),
+            change_bucketlist, format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_api_can_delete_bucketlist(self):
+        """Тестируем API на способность удаления списка заветных желаний."""
+        bucketlist = Bucketlist.objects.get()
+        response = self.client.delete(
+            reverse('details', kwargs={'pk': bucketlist.id}),
+            format='json',
+            follow=True)
+
+        self.assertEquals(response.status_code, status.HTTP_204_NO_CONTENT)
+```
 
 
 
