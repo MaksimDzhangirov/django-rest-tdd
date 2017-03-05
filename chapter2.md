@@ -38,7 +38,7 @@
 from django.db import models
 
 class Bucketlist(models.Model):
-    """Этот класс представляем собой модель списка заветных желаний."""
+    """Этот класс определяет модель для списка заветных желаний."""
     name = models.CharField(max_length=255, blank=False, unique=True)
     owner = models.ForeignKey('auth.User',  # ДОБАВЬТЕ ЭТО ПОЛЕ
     related_name='bucketlists', 
