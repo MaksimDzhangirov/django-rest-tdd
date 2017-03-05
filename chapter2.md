@@ -32,5 +32,24 @@
 
 Мы создадим поле `owner` \(владелец\) в модели для списка заветных желаний \(`Bucketlist`\). Пользователь может создать список заветных желаний - т. е. у каждого списка есть свой владелец. Таким образом, мы просто добавим поле, определяющее владельца списка, в нашу модель списка заветных желаний.
 
+```
+# rest_api/models.py
+
+from django.db import models
+
+class Bucketlist(models.Model):
+    """Этот класс представляем собой модель списка заветных желаний."""
+    name = models.CharField(max_length=255, blank=False, unique=True)
+    owner = models.ForeignKey('auth.User',  # ДОБАВЬТЕ ЭТО ПОЛЕ
+    related_name='bucketlists', 
+    on_delete=models.CASCADE) 
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        """Return a human readable representation of the model instance."""
+        return "{}".format(self.name)
+```
+
 
 
