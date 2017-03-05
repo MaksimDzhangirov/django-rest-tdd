@@ -152,17 +152,17 @@ class ViewTestCase(TestCase):
             format="json")
 
     def test_api_can_create_a_bucketlist(self):
-        """Test the api has bucket creation capability."""
+        """Тестируем возможность создания списка заветных желаний api."""
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
 
     def test_authorization_is_enforced(self):
-        """Test that the api has user authorization."""
+        """Тестируем API на способность аутентификации пользователя."""
         new_client = APIClient()
         res = new_client.get('/bucketlists/', kwargs={'pk': 3}, format="json")
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_api_can_get_a_bucketlist(self):
-        """Test the api can get a given bucketlist."""
+        """Тестируем API на способность выдачи заданного списка заветных желаний."""
         bucketlist = Bucketlist.objects.get(id=1)
         response = self.client.get(
             '/bucketlists/',
@@ -172,7 +172,7 @@ class ViewTestCase(TestCase):
         self.assertContains(response, bucketlist)
 
     def test_api_can_update_bucketlist(self):
-        """Test the api can update a given bucketlist."""
+        """Тестируем API на способность обновления заданного списка заветных желаний."""
         bucketlist = Bucketlist.objects.get()
         change_bucketlist = {'name': 'Something new'}
         res = self.client.put(
@@ -182,7 +182,7 @@ class ViewTestCase(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
     def test_api_can_delete_bucketlist(self):
-        """Test the api can delete a bucketlist."""
+        """Тестируем API на способность удаления списка заветных желаний."""
         bucketlist = Bucketlist.objects.get()
         response = self.client.delete(
             reverse('details', kwargs={'pk': bucketlist.id}),
