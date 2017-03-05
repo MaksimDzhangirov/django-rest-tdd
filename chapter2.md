@@ -103,5 +103,17 @@ from django.contrib.auth.models import User
 
 Модель User будет использоваться для создания владельца списка заветных желаний. Мы создадим пользователя в методе `setUp`, чтобы не приходилось делать это каждый раз, когда он нам будет нужен.
 
+```
+class ModelTestCase(TestCase):
+    """В этом классе определяется тестовый набор (test suite) для модели списка заветных желаний."""
+
+    def setUp(self):
+        """Определяем тестовый клиент и другие тестовые переменные."""
+        user = User.objects.create(username="nerd") # ADD THIS LINE
+     self.name = "Write world class code"
+        # specify owner of a bucketlist
+        self.bucketlist = Bucketlist(name=self.name, owner=user) # EDIT THIS TOO
+```
+
 
 
