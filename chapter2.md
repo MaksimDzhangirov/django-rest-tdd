@@ -134,17 +134,17 @@ class ModelTestCase(TestCase):
 # Здесь находится Model Test Case
 
 class ViewTestCase(TestCase):
-    """Test suite for the api views."""
+    """Тестовый набор для представлений api."""
 
     def setUp(self):
-        """Define the test client and other test variables."""
+        """Определяем тестовый клиент и другие тестовые переменные."""
         user = User.objects.create(username="nerd")
 
-        # Initialize client and force it to use authentication
+        # Инициализируем клиент и принуждаем его пройти аутентификацию
         self.client = APIClient()
         self.client.force_authenticate(user=user)
 
-        # Since user model instance is not serializable, use its Id/PK
+        # Поскольку экземпляр модели не сериализован, используем его Id/Первичный ключ
         self.bucketlist_data = {'name': 'Go to Ibiza', 'owner': user.id}
         self.response = self.client.post(
             reverse('create'),
@@ -189,6 +189,14 @@ class ViewTestCase(TestCase):
             format='json',
             follow=True)
         self.assertEquals(response.status_code, status.HTTP_204_NO_CONTENT)
+```
+
+Мы инициализировали APIClient и заставили его пройти аутентификацию. Это обеспечивает защиту API. Также был учтен владелец списка заветных желаний. Кроме того, обратили ли Вы внимание, что мы использовали self.client в каждом тестовом методе вместо создания каждый раз нового? Это гарантирует, что каждый раз используется аутентифицированный клиент. Многократное использование - это хорошая практика. :\) Прекрасно, что мы её воспользовались.
+
+Запустите тесты. Сейчас они должны _завершиться с ошибкой_.
+
+```
+python3  manage.py  test  rest_api
 ```
 
 
