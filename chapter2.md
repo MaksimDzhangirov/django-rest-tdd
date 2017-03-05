@@ -109,10 +109,10 @@ class ModelTestCase(TestCase):
 
     def setUp(self):
         """Определяем тестовый клиент и другие тестовые переменные."""
-        user = User.objects.create(username="nerd") # ADD THIS LINE
+        user = User.objects.create(username="nerd") # ДОБАВЬТЕ ЭТУ СТРОКУ
      self.name = "Write world class code"
-        # specify owner of a bucketlist
-        self.bucketlist = Bucketlist(name=self.name, owner=user) # EDIT THIS TOO
+        # указываем владельца списка заветных желаний
+        self.bucketlist = Bucketlist(name=self.name, owner=user) # ОТРЕДАКТИРУЙТЕ ТАКЖЕ ЭТУ СТРОКУ
 ```
 
 
