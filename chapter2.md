@@ -47,9 +47,11 @@ class Bucketlist(models.Model):
     date_modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        """Return a human readable representation of the model instance."""
+        """Возвращаем понятное человеку представление экземпляра модели."""
         return "{}".format(self.name)
 ```
+
+Для поля `owner` используется класс `ForeignKey` \(Внешний ключ\), принимающий множество аргументов. Первый аргумент просто указывает на класс модели , с которой мы хотим создать связь.
 
 
 
