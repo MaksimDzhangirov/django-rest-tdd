@@ -213,16 +213,16 @@ python3  manage.py  test  rest_api
 # rest_api/serializers.py
 
 class BucketlistSerializer(serializers.ModelSerializer):
-    """Serializer to map the model instance into json format."""
+    """Сериализатор, преобразующий экземпляр модели в JSON формат."""
 
     owner = serializers.ReadOnlyField(source='owner.username') # ДОБАВЬТЕ ЭТУ СТРОКУ
 
     class Meta:
-        """Map this serializer to a model and their fields."""
+        """Класс для отображения этого сериализатора в модель и её поля."""
         model = Bucketlist
         fields = ('id', 'name', 'owner', 'date_created', 'date_modified') # ДОБАВЛЯЕМ 'owner'
         read_only_fields = ('date_created', 'date_modified')
 ```
 
-Поле `owner` доступно только для чтения, поэтому пользователь, использующий наше API не сможет изменить владельца списка заветных желаний. 
+Поле `owner` доступно только для чтения, поэтому пользователь, использующий наше API не сможет изменить владельца списка заветных желаний.
 
