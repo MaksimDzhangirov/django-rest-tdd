@@ -312,7 +312,7 @@ from rest_framework import permissions
 # rest_api/views.py
 
 class CreateView(generics.ListCreateAPIView):
-    """Этот класс This class handles the GET and POSt requests of our rest api."""
+    """Этот класс осуществляет обработку GET и POST запросов нашего REST API."""
     queryset = Bucketlist.objects.all()
     serializer_class = BucketlistSerializer
     permission_classes = (permissions.IsAuthenticated,) # ДОБАВЬТЕ ЭТУ ЛИНИЮ
