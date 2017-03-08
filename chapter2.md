@@ -342,5 +342,36 @@ class IsOwner(BasePermission):
 
 Вышеприведенный класс разрешает доступ, основываясь на следующей логике - пользователь должен быть владельцем объекта, чтобы иметь к нему доступ. Если он действительно является владельцем списка, к которому хочет получить доступ, то метод класса `has_object_permission` возвращает `True`, а иначе - `False`.
 
+Чтобы добавить новый уровень доступа, достаточно просто внести его в кортеж `permission_classes`. Теперь обновленный файл `views.py` должен выглядеть как:
+
+```
+# rest_api/views.py
+
+from rest_framework import generics, permissions
+from .permissions import IsOwner
+from .serializers import BucketlistSerializer
+from .models import Bucketlist
+
+class CreateView(generics.ListCreateAPIView):
+    """Этот класс осуществляет обработку GET и POST запросов нашего REST API."""
+    queryset = Bucketlist.objects.all()
+    serializer_class = BucketlistSerializer
+    permission_classes = (
+        permissions.IsAuthenticated, IsOwner)
+
+    def perform_create(self, serializer):
+        """Сохраняем POST Save данные при создании нового списка."""
+        serializer.save(owner=self.request.user)
+
+class DetailsView(generics.RetrieveUpdateDestroyAPIView):
+    """Этот класс обрабатывает GET, PUT, PATCH и DELETE запросы."""
+
+    queryset = Bucketlist.objects.all()
+    serializer_class = BucketlistSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+        IsOwner)
+```
+
 
 
