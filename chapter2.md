@@ -300,5 +300,23 @@ python3 manage.py createsuperuser
 
 Мы можем использовать уровни доступа по умолчанию, чтобы ограничить доступ к списку заветных желаний - он будет доступен только аутентифицированным пользователям.
 
+Для этого в views.py мы импортируем классы доступа
+
+```
+from rest_framework import permissions
+```
+
+Затем в класс `CreateView` мы добавляем класс доступа `IsAuthenticated`.
+
+```
+# rest_api/views.py
+
+class CreateView(generics.ListCreateAPIView):
+    """Этот класс This class handles the GET and POSt requests of our rest api."""
+    queryset = Bucketlist.objects.all()
+    serializer_class = BucketlistSerializer
+    permission_classes = (permissions.IsAuthenticated,) # ДОБАВЬТЕ ЭТУ ЛИНИЮ
+```
+
 
 
