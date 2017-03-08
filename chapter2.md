@@ -318,5 +318,7 @@ class CreateView(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated,) # ДОБАВЬТЕ ЭТУ ЛИНИЮ
 ```
 
+Класс `IsAuthenticated` отказывает в доступе к спискам любому не аутентифицированную пользователю и разрешает только аутентифицированным. Мы могли бы использовать класс `IsAuthenticatedOrReadOnly`, который позволяет не аутентифицированным пользователям использовать "безопасные" методы \(`GET`, `HEAD` и `OPTIONS`\) . 
+
 
 
