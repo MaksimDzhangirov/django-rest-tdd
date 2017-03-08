@@ -205,5 +205,24 @@ python3  manage.py  test  rest_api
 
 ### Сначала добавляем пользователя
 
+Чаще всего любые изменения , сделанные в Вашей модели, должны быть отражены в Ваших сериализаторах. Это связано с тем, что сериализаторы непосредственно взаимодействуют с моделью , преобразовывая запросы  к базе данных в JSON и наоборот.
 
+Давайте отредактируем наш сериализатор для списка заветных желаний. Просто перейдите в файл `serializers.py` и добавьте новое поле, которую лучше всего назвать `owner`. Оно будет определять владельца списка.
+
+```
+# rest_api/serializers.py
+
+class BucketlistSerializer(serializers.ModelSerializer):
+    """Serializer to map the model instance into json format."""
+
+    owner = serializers.ReadOnlyField(source='owner.username') # ДОБАВЬТЕ ЭТУ СТРОКУ
+
+    class Meta:
+        """Map this serializer to a model and their fields."""
+        model = Bucketlist
+        fields = ('id', 'name', 'owner', 'date_created', 'date_modified') # ДОБАВЛЯЕМ 'owner'
+        read_only_fields = ('date_created', 'date_modified')
+```
+
+Поле `owner` доступно только для чтения, поэтому пользователь, использующий наше API не сможет изменить владельца списка заветных желаний. 
 
