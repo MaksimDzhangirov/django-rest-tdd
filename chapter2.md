@@ -326,7 +326,21 @@ class CreateView(generics.ListCreateAPIView):
 
 Давайте создадим файл `permissions.py` в каталоге `rest_api`. В этот файл добавьте следующий код:
 
+```
+from rest_framework.permissions import BasePermission
+from .models import Bucketlist
 
+class IsOwner(BasePermission):
+    """Дополнительный класс доступа, позволяющий только владельцам списка редактировать его."""
+
+    def has_object_permission(self, request, view, obj):
+        """Метод возвращает True, если текущий пользователь является владельцем списка."""
+        if isinstance(obj, Bucketlist):
+            return obj.owner == request.user
+        return obj.owner == request.user
+```
+
+Вышеприведенный класс разрешает доступ, основываясь на следующей логике - пользователь должен быть владельцем объекта, чтобы иметь к нему доступ. Если он действительно является владельцем списка, к которому хочет получить доступ, то метод класса `has_object_permission` возвращает `True`, а иначе - `False`.
 
 
 
