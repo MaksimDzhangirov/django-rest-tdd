@@ -406,7 +406,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_api', # note the comma (если Вы забудете про неё, возникнет ошибка! ужас!)
+    'rest_api', # поставьте запятую (если Вы забудете про неё, возникнет ошибка! ужас!)
     'rest_framework.authtoken' # ДОБАВЬТЕ ЭТУ СТРОКУ
 )
 ```
@@ -424,6 +424,36 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.dispatch import receiver
+```
+
+Затем напишем функцию-приемник в конце файла:
+
+```
+# rest_api/models.py
+from django.db.models.signals import post_save
+from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
+from django.dispatch import receiver
+
+class Bucketlist(models.Model):
+    """Этот класс является моделью для списка заветных желаний."""
+    name = models.CharField(max_length=255, blank=False, unique=True)
+    owner = models.ForeignKey(
+        'auth.User',
+        related_name='bucketlists',
+        on_delete=models.CASCADE)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        """Возвращает понятное человеку представление экземпляра модели."""
+        return "{}".format(self.name)
+
+# Это функция-приемник осуществляющая создание токена сразу после создания нового пользователя.
+@receiver(post_save, sender=User)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
 ```
 
 
