@@ -460,5 +460,52 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 
 Также нам нужно как-то передать токен пользователю. Для этого будем использовать URL. Добавьте следующие строки в `urls.py`:
 
+```
+# rest_api/urls.py
+from rest_framework.authtoken.views import obtain_auth_token # добавьте этот импорт
+
+urlpatterns = {
+    url(r'^bucketlists/$', CreateView.as_view(), name="create"),
+    url(r'^bucketlists/(?P<pk>[0-9]+)/$',
+        DetailsView.as_view(), name="details"),
+    url(r'^auth/', include('rest_framework.urls',
+                           namespace='rest_framework')),
+    url(r'^users/$', UserView.as_view(), name="users"),
+    url(r'users/(?P<pk>[0-9]+)/$',
+        UserDetailsView.as_view(), name="user_details"),
+    url(r'^get-token/', obtain_auth_token), # Добавьте эту строку
+}
+
+urlpatterns = format_suffix_patterns(urlpatterns)
+```
+
+REST фреймворк настолько мощный, что имеет встроенное представление осуществляющее передачу токена пользователю, когда он посылает своё имя и пароль на сервер.
+
+Продолжим создание приложения, осуществив миграции и перенеся изменения модели в базу данных, чтобы мы смогли воспользоваться этим встроенным представлением.
+
+```
+python3 manage.py makemigrations &&  python3 manage.py migrate
+```
+
+Наконец, добавим некоторые настройки, чтобы наше приложение могло осуществлять аутентификацию, используя оба типа: BasicAuthentication и TokenAuthentication.
+
+```
+# project/settings.py
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
+```
+
+Ключ DEFAULT\_AUTHENTICATION\_CLASSES указывает приложению , что мы хотим настроить несколько способов аутентификации пользователя. Мы указываем эти способы, перечисляя встроенные классы аутентификации внутри этого кортежа.
+
+## Запускаем приложение
+
 
 
